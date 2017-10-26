@@ -52,11 +52,26 @@
       }
     
     }
+
+    function onBackKeyDown() {
+    var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i) || userAgent.match(/iPod/i)) {
+        // IOS DEVICE
+        history.go(-1);
+    } else if (userAgent.match(/Android/i)) {
+        // ANDROID DEVICE
+        navigator.app.backHistory();
+    } else {
+        // EVERY OTHER DEVICE
+        history.go(-1);
+    }
+}
+
     
     function openBrowser() {
         var url = 'http://fiori-dev.esc.win.colpal.com/sap/bc/ui5_ui5/ui2/ushell/shells/abap/FioriLaunchpad.html#ZMNG_ORDER-display';
         var target = '_blank';
-        var options = "hardwareback=no,location=no,toolbar=no"
+        var options = "hardwareback=yes,location=no,toolbar=no"
             
         var ref = cordova.InAppBrowser.open(url, target, options);
         
@@ -79,7 +94,8 @@
 
         function exitCallback() {
             console.log('Browser is closed...')
-            navigator.app.exitApp();
+            //navigator.app.exitApp();
+            onBackKeyDown();
         }
     }
 
